@@ -101,12 +101,30 @@ class Questions {
     return this.selectedQuestionsThemeTestName.length - 1 === this.selectedTestQuestionIndex
   }
 
+  get count() {
+    return this.selectedQuestionsThemeTestName.length
+  }
+
+  get currentNumber() {
+    return this.selectedTestQuestionIndex + 1
+  }
+
   setQuestionsStatus(status) {
     this.getQuestionsStatus = status
   }
 
   get isSuccess() {
     return this.getQuestionsStatus === this.getQuestionsStatusSuccess
+  }
+
+  nextQuestion() {
+    this.selectedTestQuestionIndex++
+    this.setQuestion()
+  }
+
+  previousQuestion() {
+    this.selectedTestQuestionIndex--
+    this.setQuestion()
   }
 }
 

@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
-import Buttons from './components/Buttons'
-import Question from './components/Question'
+import Header from './components/Header'
+import Main from './components/Main'
 import questions from './models/Questions'
 import './styles/app.css'
 
@@ -12,8 +12,8 @@ export default function App() {
 
   return (
     <>
-      <Question />
-      <Buttons />
+      <Header />
+      <Main />
     </>
   )
 }
