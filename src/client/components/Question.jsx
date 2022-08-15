@@ -3,8 +3,9 @@ import {observer} from 'mobx-react-lite'
 import questions from '../models/Questions'
 
 export default observer(() => {
+  if (!questions.isSuccess) return null
+
   const pars = questions.pars
-  if (pars) return null
 
   const handleChange = event => {
     questions.setSelectedVariants(event.target.value)
@@ -15,7 +16,7 @@ export default observer(() => {
       <FormLabel>{pars.value}</FormLabel>
       <RadioGroup onChange={handleChange}>
         {pars.variants.map(value => (
-          <FormControlLabel value={value} control={<Radio />} label={value} />
+          <FormControlLabel value={value} control={<Radio />} label={value} key={value} />
         ))}
       </RadioGroup>
     </FormControl>

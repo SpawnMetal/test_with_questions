@@ -4,8 +4,7 @@ import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 
 export default observer(() => {
-  const pars = questions.pars
-  if (pars) return null
+  if (!questions.isSuccess) return null
 
   const handleClickNext = event => {}
 

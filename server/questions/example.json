@@ -1,0 +1,30 @@
+[
+  {
+    "testName": "cars1",
+    "elemType": "radio",
+    "value": "Выбери свою марку машины",
+    "variants": ["Toyota", "Honda"],
+    "success": "Honda"
+  },
+  {
+    "testName": "cars1",
+    "elemType": "check",
+    "value": "Выбери из списка марки машин, которые у меня были",
+    "variants": ["Toyota", "Honda", "Nissan"],
+    "success": ["Nissan", "Honda"]
+  },
+  {
+    "testName": "cars2",
+    "elemType": "radio",
+    "value": "Выбери самую популярную макру",
+    "variants": ["Toyota", "Honda", "Test"],
+    "success": "Toyota"
+  },
+  {
+    "testName": "cars2",
+    "elemType": "check",
+    "value": "Выбери существующие марки машин",
+    "variants": ["Toyota", "Honda", "Test"],
+    "success": ["Toyota", "Honda"]
+  }
+]

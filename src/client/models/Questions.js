@@ -22,6 +22,9 @@ class Questions {
   selectedQuestionsTheme = [] // Все вопросы из файла
   selectedQuestionsThemeTestName = [] // Все вопросы из файла по тесту
   question = {}
+  getQuestionsStatus = ''
+  getQuestionsStatusSuccess = 'success'
+  getQuestionsStatusError = 'error'
 
   constructor() {
     makeAutoObservable(this)
@@ -47,7 +50,7 @@ class Questions {
 
   // Устанавливает все вопросы из файла
   setSelectedQuestionsTheme() {
-    const questionsThemeFind = questions.find(par => Object.keys(par).includes(this.selectedTheme))
+    const questionsThemeFind = this.questions.find(par => Object.keys(par).includes(this.selectedTheme))
     this.selectedQuestionsTheme = questionsThemeFind[this.selectedTheme]
   }
 
@@ -72,7 +75,22 @@ class Questions {
 
   *getQuestions() {
     const response = yield fetch('http://localhost:3300/questions')
-    response.json().then(result => (this.question = result))
+    response
+      .json()
+      .then(result => {
+        this.questions = result
+
+        // Test
+        this.setSelectedTheme('example')
+        this.setSelectedTestName('cars1')
+        this.setSelectedTestQuestionIndex(0)
+        this.setSelectedQuestionsTheme()
+        this.setSelectedQuestionsThemeTestName()
+        this.setQuestion()
+
+        this.setQuestionsStatus(this.getQuestionsStatusSuccess)
+      })
+      .catch(() => this.setQuestionsStatus(this.getQuestionsStatusError))
   }
 
   get isFirst() {
@@ -80,7 +98,15 @@ class Questions {
   }
 
   get isLast() {
-    return this.questions[this.selectedTheme].length === this.selectedTestQuestionIndex
+    return this.selectedQuestionsThemeTestName.length - 1 === this.selectedTestQuestionIndex
+  }
+
+  setQuestionsStatus(status) {
+    this.getQuestionsStatus = status
+  }
+
+  get isSuccess() {
+    return this.getQuestionsStatus === this.getQuestionsStatusSuccess
   }
 }
 
