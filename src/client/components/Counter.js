@@ -5,7 +5,15 @@ import questions from '../models/Questions'
 export default observer(() => {
   return (
     <Box textAlign="center">
-      {questions.currentNumber} / {questions.count}
+      <Box>
+        {questions.currentNumber} / {questions.count}
+      </Box>
+
+      {questions.stateFinished && (
+        <Box color={questions.numberOfCorrect === questions.count ? '#00ff00' : '#ff0000'}>
+          {questions.numberOfCorrect} / {questions.count}
+        </Box>
+      )}
     </Box>
   )
 })

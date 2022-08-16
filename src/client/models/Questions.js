@@ -21,10 +21,13 @@ class Questions {
   selectedVariants = [] // Выбранные ответы в впросах
   selectedQuestionsTheme = [] // Все вопросы из файла
   selectedQuestionsThemeTestName = [] // Все вопросы из файла по тесту
-  question = {}
-  getQuestionsStatus = ''
-  getQuestionsStatusSuccess = 'success'
-  getQuestionsStatusError = 'error'
+  question = {} // Параметры текущего вопроса
+  getQuestionsStatus = '' // Статус получения данных с сервера
+  numberOfCorrect = 0 // Количество правильных ответов
+  stateFinished = false // Тест завершён
+
+  getQuestionsStatusSuccess = 'success' // Успешный статус получения данных с сервера
+  getQuestionsStatusError = 'error' // Статус получения данных с сервера с ошибкой
 
   constructor() {
     makeAutoObservable(this)
@@ -43,9 +46,7 @@ class Questions {
   }
 
   setSelectedVariants(value) {
-    if (typeof this.selectedTestQuestionIndex !== 'number') return
-    if (!this.selectedVariants[this.selectedTestQuestionIndex]) this.selectedVariants.push(value)
-    else this.selectedVariants[this.selectedTestQuestionIndex] = value
+    this.selectedVariants[this.selectedTestQuestionIndex] = value
   }
 
   // Устанавливает все вопросы из файла
@@ -61,6 +62,11 @@ class Questions {
 
   // Устанавливает параметры текущего вопроса
   setQuestion() {
+    if (this.selectedVariants[this.selectedTestQuestionIndex] === undefined) {
+      const add = typeof this.selectedQuestionsThemeTestName[this.selectedTestQuestionIndex].success === 'string' ? '' : []
+      this.selectedVariants.push(add)
+    }
+
     this.question = this.selectedQuestionsThemeTestName[this.selectedTestQuestionIndex]
   }
 
@@ -81,12 +87,7 @@ class Questions {
         this.questions = result
 
         // Test
-        this.setSelectedTheme('example')
-        this.setSelectedTestName('cars1')
-        this.setSelectedTestQuestionIndex(0)
-        this.setSelectedQuestionsTheme()
-        this.setSelectedQuestionsThemeTestName()
-        this.setQuestion()
+        this.start()
 
         this.setQuestionsStatus(this.getQuestionsStatusSuccess)
       })
@@ -124,6 +125,53 @@ class Questions {
 
   previousQuestion() {
     this.selectedTestQuestionIndex--
+    this.setQuestion()
+  }
+
+  // Устанавливает количество верных овтетов
+  setNumberOfCorrect() {
+    this.numberOfCorrect = 0
+
+    this.selectedQuestionsThemeTestName.forEach((element, index) => {
+      if (typeof element.success === 'string') {
+        if (element.success.toLowerCase() === this.selectedVariants[index].toLowerCase()) this.numberOfCorrect++
+      } else {
+        if (!element.success.length && !this.selectedVariants[index].length) {
+          this.numberOfCorrect++
+          return
+        }
+
+        let numberOfCorrectSub = 0
+
+        for (let successVariant of element.success) {
+          for (let selectedVariant of this.selectedVariants[index]) {
+            if (successVariant.toLowerCase() === selectedVariant.toLowerCase()) {
+              numberOfCorrectSub++
+              continue
+            }
+          }
+
+          if (numberOfCorrectSub === element.success.length) {
+            this.numberOfCorrect++
+            continue
+          }
+        }
+      }
+    })
+  }
+
+  finish() {
+    this.stateFinished = true
+    this.setNumberOfCorrect()
+  }
+
+  start() {
+    this.stateFinished = false
+    this.setSelectedTheme('example')
+    this.setSelectedTestName('cars1')
+    this.setSelectedTestQuestionIndex(0)
+    this.setSelectedQuestionsTheme()
+    this.setSelectedQuestionsThemeTestName()
     this.setQuestion()
   }
 }
