@@ -28,6 +28,9 @@ class Questions {
 
   getQuestionsStatusSuccess = 'success' // Успешный статус получения данных с сервера
   getQuestionsStatusError = 'error' // Статус получения данных с сервера с ошибкой
+  radioButtonType = 'radio'
+  checkBoxType = 'check'
+  inputType = 'input'
 
   constructor() {
     makeAutoObservable(this)
@@ -45,8 +48,28 @@ class Questions {
     this.selectedTestQuestionIndex = selectedTestQuestionIndex
   }
 
+  // Устанавливает выбранное значение в вопросе
   setSelectedVariants(value) {
-    this.selectedVariants[this.selectedTestQuestionIndex] = value
+    if (this.isStringType) this.selectedVariants[this.selectedTestQuestionIndex] = value
+    else {
+      const selectedValue = this.selectedVariants[this.selectedTestQuestionIndex]
+      let checked = true
+
+      for (let i in selectedValue)
+        if (selectedValue[i].toLowerCase() === value.toLowerCase()) {
+          checked = false
+          selectedValue.splice(i, 1)
+          break
+        }
+
+      if (checked) selectedValue.push(value)
+    }
+  }
+
+  isSelected(value) {
+    const selectedValue = this.selectedVariants[this.selectedTestQuestionIndex]
+    for (let selVal of selectedValue) if (selVal.toLowerCase() === value.toLowerCase()) return true
+    return false
   }
 
   // Устанавливает все вопросы из файла
@@ -60,10 +83,15 @@ class Questions {
     this.selectedQuestionsThemeTestName = this.selectedQuestionsTheme.filter(par => par.testName === this.selectedTestName)
   }
 
+  // Получает тип ответа в текущем вопросе - строка
+  get isStringType() {
+    return typeof this.selectedQuestionsThemeTestName[this.selectedTestQuestionIndex].success === 'string'
+  }
+
   // Устанавливает параметры текущего вопроса
   setQuestion() {
-    if (this.selectedVariants[this.selectedTestQuestionIndex] === undefined) {
-      const add = typeof this.selectedQuestionsThemeTestName[this.selectedTestQuestionIndex].success === 'string' ? '' : []
+    if (this.selectedVariants.length === this.selectedTestQuestionIndex) {
+      const add = this.isStringType ? '' : []
       this.selectedVariants.push(add)
     }
 
@@ -73,9 +101,9 @@ class Questions {
   // Получает параметры, необходимые для отображения в вопросе
   get pars() {
     return {
-      elemType: this.question.elemType,
       value: this.question.value,
       variants: this.question.variants,
+      selectedValues: this.selectedVariants[this.selectedTestQuestionIndex],
     }
   }
 
@@ -173,6 +201,18 @@ class Questions {
     this.setSelectedQuestionsTheme()
     this.setSelectedQuestionsThemeTestName()
     this.setQuestion()
+  }
+
+  get isRadioButton() {
+    return this.question.elemType === this.radioButtonType
+  }
+
+  get isCheckBox() {
+    return this.question.elemType === this.checkBoxType
+  }
+
+  get isInput() {
+    return this.question.elemType === this.inputType
   }
 }
 

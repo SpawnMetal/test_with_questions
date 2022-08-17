@@ -1,8 +1,9 @@
 import Buttons from './Buttons'
-import Question from './Question'
+import QuestionRadio from './QuestionRadio'
 import {Grid} from '@mui/material'
 import {observer} from 'mobx-react-lite'
 import Counter from './Counter'
+import QuestionCheck from './QuestionCheck'
 
 export default observer(() => {
   return (
@@ -17,7 +18,8 @@ export default observer(() => {
       <Grid item xs={1}></Grid>
 
       <Grid item xs={6}>
-        <Question />
+        <QuestionRadio />
+        <QuestionCheck />
       </Grid>
     </Grid>
   )

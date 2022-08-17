@@ -3,7 +3,7 @@ import {observer} from 'mobx-react-lite'
 import questions from '../models/Questions'
 
 export default observer(() => {
-  if (!questions.isSuccess) return null
+  if (!questions.isSuccess || !questions.isRadioButton) return null
 
   const pars = questions.pars
 
@@ -15,9 +15,9 @@ export default observer(() => {
     <Box>
       <FormControl>
         <FormLabel>{pars.value}</FormLabel>
-        <RadioGroup onChange={handleChange}>
-          {pars.variants.map(value => (
-            <FormControlLabel value={value} control={<Radio />} label={value} key={value} />
+        <RadioGroup value={pars.selectedValues} onChange={handleChange}>
+          {pars.variants.map((value, index) => (
+            <FormControlLabel control={<Radio />} value={value} label={value} key={index} />
           ))}
         </RadioGroup>
       </FormControl>
