@@ -19,12 +19,13 @@ class Questions {
   selectedTestName = '' // Выбранный тест
   selectedTestQuestionIndex = 0 // Выбранный номер вопроса
   selectedVariants = [] // Выбранные ответы в впросах
-  selectedQuestionsTheme = [] // Все вопросы из файла
+  selectedQuestionsTheme = [] // Все тесты из файла
   selectedQuestionsThemeTestName = [] // Все вопросы из файла по тесту
   question = {} // Параметры текущего вопроса
   getQuestionsStatus = '' // Статус получения данных с сервера
   numberOfCorrect = 0 // Количество правильных ответов
   stateFinished = false // Тест завершён
+  questionsList = {} // Список с тестами по теме {theme1: [testName, testName2]}
 
   getQuestionsStatusSuccess = 'success' // Успешный статус получения данных с сервера
   getQuestionsStatusError = 'error' // Статус получения данных с сервера с ошибкой
@@ -113,10 +114,8 @@ class Questions {
       .json()
       .then(result => {
         this.questions = result
-
-        // Test
-        this.start()
-
+        this.start() // Test
+        this.setQuestionsList()
         this.setQuestionsStatus(this.getQuestionsStatusSuccess)
       })
       .catch(() => this.setQuestionsStatus(this.getQuestionsStatusError))
@@ -213,6 +212,23 @@ class Questions {
 
   get isInput() {
     return this.question.elemType === this.inputType
+  }
+
+  // Устанавливает список с тестами
+  setQuestionsList() {
+    this.questions.forEach(question => {
+      const theme = Object.keys(question)[0]
+      const testNames = new Set()
+
+      for (let test of question[theme]) testNames.add(test.testName)
+
+      this.questionsList[theme] = [...testNames]
+    })
+  }
+
+  get questionsListIsEmpty() {
+    if (!this.isSuccess) return true
+    return !Object.keys(this.questionsList).length
   }
 }
 
