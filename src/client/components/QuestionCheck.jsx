@@ -3,7 +3,7 @@ import {observer} from 'mobx-react-lite'
 import questions from '../models/Questions'
 
 export default observer(() => {
-  if (!questions.isSuccess || !questions.isCheckBox) return null
+  if (!questions.isCheckBox) return null
 
   const pars = questions.pars
 

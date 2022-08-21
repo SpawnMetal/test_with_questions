@@ -14,6 +14,13 @@
     "success": ["Nissan", "Honda"]
   },
   {
+    "testName": "cars1",
+    "elemType": "input",
+    "value": "Введите Lamborghini",
+    "variants": "",
+    "success": "Lamborghini"
+  },
+  {
     "testName": "cars2",
     "elemType": "radio",
     "value": "Выбери самую популярную макру",

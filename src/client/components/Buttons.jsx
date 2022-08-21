@@ -14,12 +14,6 @@ export default observer(() => {
 
   return (
     <Stack direction="column" spacing={2}>
-      {!questions.isFirst && (
-        <Button onClick={handleClickBack} variant="contained">
-          Назад
-        </Button>
-      )}
-
       {questions.isLast ? (
         <Button onClick={handleClickEnd} variant="contained" color="success">
           Завершить
@@ -27,6 +21,12 @@ export default observer(() => {
       ) : (
         <Button onClick={handleClickNext} variant="contained">
           Далее
+        </Button>
+      )}
+
+      {!questions.isFirst && (
+        <Button onClick={handleClickBack} variant="outlined">
+          Назад
         </Button>
       )}
     </Stack>

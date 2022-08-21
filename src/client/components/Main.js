@@ -1,13 +1,16 @@
 import Buttons from './Buttons'
 import QuestionRadio from './QuestionRadio'
-import {Grid} from '@mui/material'
+import {Box, Grid} from '@mui/material'
 import {observer} from 'mobx-react-lite'
 import Counter from './Counter'
 import QuestionCheck from './QuestionCheck'
 import List from './List'
 import questions from '../models/Questions'
+import QuestionInput from './QuestionInput'
 
 export default observer(() => {
+  if (!questions.isSuccess) return <Box>Не удалось загрузить данные с сервера</Box>
+
   return (
     <Grid container>
       {(questions.isStarted || questions.isFinished) && (
@@ -24,6 +27,7 @@ export default observer(() => {
           <Grid item xs={6}>
             <QuestionRadio />
             <QuestionCheck />
+            <QuestionInput />
           </Grid>
         </>
       )}

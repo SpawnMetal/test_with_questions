@@ -3,7 +3,7 @@ import {observer} from 'mobx-react-lite'
 import questions from '../models/Questions'
 
 export default observer(() => {
-  if (!questions.isSuccess || !questions.isRadioButton) return null
+  if (!questions.isRadioButton) return null
 
   const pars = questions.pars
 
