@@ -20,12 +20,16 @@ export default observer(() => {
     setOpen(newOpen)
   }
 
+  const handleClickTestName = (theme, testName) => {
+    questions.start(theme, testName)
+  }
+
   const testNamesList = theme => {
     const result = []
 
     for (let testName of questions.questionsList[theme])
       result.push(
-        <ListItemButton sx={{pl: 4}} key={testName}>
+        <ListItemButton sx={{pl: 4}} key={testName} onClick={() => handleClickTestName(theme, testName)}>
           <ListItemText primary={testName} />
         </ListItemButton>,
       )

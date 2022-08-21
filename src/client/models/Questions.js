@@ -24,6 +24,7 @@ class Questions {
   question = {} // Параметры текущего вопроса
   getQuestionsStatus = '' // Статус получения данных с сервера
   numberOfCorrect = 0 // Количество правильных ответов
+  stateStarted = false // Тест начат
   stateFinished = false // Тест завершён
   questionsList = {} // Список с тестами по теме {theme1: [testName, testName2]}
 
@@ -114,7 +115,6 @@ class Questions {
       .json()
       .then(result => {
         this.questions = result
-        this.start() // Test
         this.setQuestionsList()
         this.setQuestionsStatus(this.getQuestionsStatusSuccess)
       })
@@ -188,14 +188,17 @@ class Questions {
   }
 
   finish() {
+    this.stateStarted = false
     this.stateFinished = true
     this.setNumberOfCorrect()
   }
 
-  start() {
+  start(theme, testName) {
+    this.stateStarted = true
     this.stateFinished = false
-    this.setSelectedTheme('example')
-    this.setSelectedTestName('cars1')
+    this.selectedVariants = []
+    this.setSelectedTheme(theme)
+    this.setSelectedTestName(testName)
     this.setSelectedTestQuestionIndex(0)
     this.setSelectedQuestionsTheme()
     this.setSelectedQuestionsThemeTestName()
@@ -229,6 +232,14 @@ class Questions {
   get questionsListIsEmpty() {
     if (!this.isSuccess) return true
     return !Object.keys(this.questionsList).length
+  }
+
+  get isStarted() {
+    return this.stateStarted
+  }
+
+  get isFinished() {
+    return this.stateFinished
   }
 }
 
