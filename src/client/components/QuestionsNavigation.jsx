@@ -11,6 +11,7 @@ export default observer(() => {
     let color = 'inherit'
 
     if (questions.isSelectedVariants(i)) color = 'primary'
+    if (questions.isFinished) color = questions.isCorrect(i) ? 'success' : 'error'
 
     buttons.push(
       <Button key="two" color={color} onClick={() => handleClick(i)}>

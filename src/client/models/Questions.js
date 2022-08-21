@@ -164,33 +164,33 @@ class Questions {
   // Устанавливает количество верных овтетов
   setNumberOfCorrect() {
     this.numberOfCorrect = 0
+    this.selectedQuestionsThemeTestName.forEach((element, index) => this.isCorrect(index, element) && this.numberOfCorrect++)
+  }
 
-    this.selectedQuestionsThemeTestName.forEach((element, index) => {
-      if (typeof element.success === 'string') {
-        if (element.success.toLowerCase() === this.selectedVariants[index].toLowerCase()) this.numberOfCorrect++
-      } else {
-        if (!element.success.length && !this.selectedVariants[index].length) {
-          this.numberOfCorrect++
-          return
-        }
+  // Получает значение, правильно ли выбран ответ в вопросе
+  isCorrect(index, element = null) {
+    if (!element) element = this.selectedQuestionsThemeTestName[index]
 
-        let numberOfCorrectSub = 0
+    if (typeof element.success === 'string') {
+      if (element.success.toLowerCase() === this.selectedVariants[index].toLowerCase()) return true
+    } else {
+      if (!element.success.length && !this.selectedVariants[index].length) return true
 
-        for (let successVariant of element.success) {
-          for (let selectedVariant of this.selectedVariants[index]) {
-            if (successVariant.toLowerCase() === selectedVariant.toLowerCase()) {
-              numberOfCorrectSub++
-              continue
-            }
-          }
+      let numberOfCorrectSub = 0
 
-          if (numberOfCorrectSub === element.success.length) {
-            this.numberOfCorrect++
+      for (let successVariant of element.success) {
+        for (let selectedVariant of this.selectedVariants[index]) {
+          if (successVariant.toLowerCase() === selectedVariant.toLowerCase()) {
+            numberOfCorrectSub++
             continue
           }
         }
+
+        if (numberOfCorrectSub === element.success.length) return true
       }
-    })
+    }
+
+    return false
   }
 
   finish() {
