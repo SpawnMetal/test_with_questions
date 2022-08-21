@@ -68,7 +68,8 @@ class Questions {
     }
   }
 
-  isSelected(value) {
+  // Получает признак, выбран пункт или нет
+  isChecked(value) {
     const selectedValue = this.selectedVariants[this.selectedTestQuestionIndex]
     for (let selVal of selectedValue) if (selVal.toLowerCase() === value.toLowerCase()) return true
     return false
@@ -152,6 +153,11 @@ class Questions {
 
   previousQuestion() {
     this.selectedTestQuestionIndex--
+    this.setQuestion()
+  }
+
+  goQuestion(index) {
+    this.selectedTestQuestionIndex = index
     this.setQuestion()
   }
 
@@ -240,6 +246,14 @@ class Questions {
 
   get isFinished() {
     return this.stateFinished
+  }
+
+  get questionsCount() {
+    return this.selectedQuestionsThemeTestName.length
+  }
+
+  isSelectedVariants(index) {
+    return this.selectedVariants?.[index]?.length ? true : false
   }
 }
 

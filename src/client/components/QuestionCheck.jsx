@@ -16,7 +16,7 @@ export default observer(() => {
       <FormGroup onChange={handleChange}>
         <FormLabel>{pars.value}</FormLabel>
         {pars.variants.map((value, index) => (
-          <FormControlLabel control={<Checkbox />} value={value} label={value} checked={questions.isSelected(value)} key={index} />
+          <FormControlLabel control={<Checkbox />} value={value} label={value} checked={questions.isChecked(value)} key={index} />
         ))}
       </FormGroup>
     </Box>

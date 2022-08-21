@@ -4,7 +4,7 @@ import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 
 export default observer(() => {
-  if (!questions.isSuccess || questions.stateFinished) return null
+  if (questions.stateFinished) return null
 
   const handleClickNext = () => questions.nextQuestion()
 

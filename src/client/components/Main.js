@@ -7,6 +7,7 @@ import QuestionCheck from './QuestionCheck'
 import List from './List'
 import questions from '../models/Questions'
 import QuestionInput from './QuestionInput'
+import QuestionsNavigation from './QuestionsNavigation'
 
 export default observer(() => {
   if (!questions.isSuccess) return <Box>Не удалось загрузить данные с сервера</Box>
@@ -15,6 +16,11 @@ export default observer(() => {
     <Grid container>
       {(questions.isStarted || questions.isFinished) && (
         <>
+          <Grid item xs={12}>
+            {' '}
+            <QuestionsNavigation />
+          </Grid>
+
           <Grid item xs={1}></Grid>
 
           <Grid item xs={2}>
