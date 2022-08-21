@@ -193,6 +193,18 @@ class Questions {
     return false
   }
 
+  // Получает значение, правильно ли выбран вариант ответа в вопросе
+  isCorrectVariant(value) {
+    value = value.toLowerCase()
+    const successVariant = this.selectedQuestionsThemeTestName[this.selectedTestQuestionIndex].success
+
+    if (this.isStringType) {
+      if (value === successVariant.toLowerCase()) return true
+    } else for (let success of successVariant) if (value === success.toLowerCase()) return true
+
+    return false
+  }
+
   finish() {
     this.stateStarted = false
     this.stateFinished = true
