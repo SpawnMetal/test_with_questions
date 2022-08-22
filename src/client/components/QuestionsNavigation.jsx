@@ -14,7 +14,7 @@ export default observer(() => {
     if (questions.isFinished) color = questions.isCorrect(i) ? 'success' : 'error'
 
     buttons.push(
-      <Button key="two" color={color} onClick={() => handleClick(i)}>
+      <Button key={i} color={color} onClick={() => handleClick(i)}>
         {i + 1}
       </Button>,
     )
